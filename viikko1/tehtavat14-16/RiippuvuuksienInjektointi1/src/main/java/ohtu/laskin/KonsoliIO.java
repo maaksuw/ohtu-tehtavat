@@ -2,7 +2,9 @@
 package ohtu.laskin;
 
 import java.util.Scanner;
+import org.springframework.stereotype.Component;
 
+@Component
 public class KonsoliIO implements IO {
     private Scanner lukija;
 
