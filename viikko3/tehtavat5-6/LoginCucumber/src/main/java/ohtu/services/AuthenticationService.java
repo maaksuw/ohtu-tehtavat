@@ -39,13 +39,8 @@ public class AuthenticationService {
     }
 
     private boolean invalid(String username, String password) {
-        User u = userDao.findByName(username);
-        if (u == null) {
-            return true;
-        }
-        if (u.getPassword().equals(password)) {
-            return false;
-        }
-        return true;
+        if(!(username.matches("[a-z]*") && username.length() >= 3)) return true;
+        if(!(password.matches("[a-z]*[0-9]([a-z]|[0-9])*") && password.length() >= 8)) return true;
+        return false;
     }
 }

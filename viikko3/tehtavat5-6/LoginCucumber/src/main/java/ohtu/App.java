@@ -33,8 +33,8 @@ public class App {
             }
 
             if (command.equals("new")) {
-                String[] usernameAndPasword = ask();
-                if (auth.createUser(usernameAndPasword[0], usernameAndPasword[1])) {
+                String[] usernameAndPassword = ask();
+                if (auth.createUser(usernameAndPassword[0], usernameAndPassword[1])) {
                     io.print("new user registered");
                 } else {
                     io.print("new user not registered");
