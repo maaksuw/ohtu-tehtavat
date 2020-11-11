@@ -30,6 +30,22 @@ public class Stepdefs {
         element.click();
     }
     
+    @Given("user with username {string} with password {string} is successfully created")
+    public void userWithUsernameWithPasswordIsSuccesfullyCreated(String username, String password) {
+        driver.get(baseUrl);
+        goToAccountCreation();
+        createUser(username, password, password);
+        pageHasContent("Welcome to Ohtu Application!");
+    }
+    
+    @Given("user with username {string} and password {string} is tried to be created")
+    public void userWithUsernameAndPasswordIsTriedToBeCreated(String username, String password) {
+        driver.get(baseUrl);
+        goToAccountCreation();
+        createUser(username, password, password);
+        returnToMainPage();
+    }
+    
     @When("correct username {string} and password {string} are given")
     public void correctUsernameAndPasswordAreGiven(String username, String password) {
         logInWith(username, password);
@@ -133,5 +149,20 @@ public class Stepdefs {
         element.sendKeys(confirmation);
         element = driver.findElement(By.name("signup"));
         element.submit();
+    }
+    
+    private void goToAccountCreation() {
+        WebElement element = driver.findElement(By.linkText("register new user"));       
+        element.click();
+    }
+    
+    private void returnToMainPage() {
+        WebElement element = driver.findElement(By.linkText("back to home"));       
+        element.click();
+    }
+    
+    private void goToLogin() {
+        WebElement element = driver.findElement(By.linkText("login"));       
+        element.click();
     }
 }
