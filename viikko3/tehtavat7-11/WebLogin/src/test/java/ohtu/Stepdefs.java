@@ -23,26 +23,22 @@ public class Stepdefs {
         element.click();   
     }    
     
+    @Given("command new user is selected")
+    public void commandnewUserIsSelected() {
+        driver.get(baseUrl);
+        WebElement element = driver.findElement(By.linkText("register new user"));       
+        element.click();
+    }
+    
     @When("correct username {string} and password {string} are given")
     public void correctUsernameAndPasswordAreGiven(String username, String password) {
         logInWith(username, password);
-    }    
-    
-    @Then("user is logged in")
-    public void userIsLoggedIn() {
-        pageHasContent("Ohtu Application main page");
-    }    
+    }     
  
     @When("correct username {string} and incorrect password {string} are given")
     public void correctUsernameAndIncorrectPasswordAreGiven(String username, String password) {
         logInWith(username, password);
-    }    
-    
-    @Then("user is not logged in and error message is given")
-    public void userIsNotLoggedInAndErrorMessageIsGiven() {
-        pageHasContent("invalid username or password");
-        pageHasContent("Give your credentials to login");
-    }    
+    }        
     
     @When("username {string} and password {string} are given")
     public void usernameAndPasswordAreGiven(String username, String password) throws Throwable {
@@ -54,11 +50,58 @@ public class Stepdefs {
         logInWith(username, password);
     }   
     
+    @When("a valid username {string} and password {string} and matching password confirmation are entered")
+    public void aValidUsernameAndPasswordAndMatchingPasswordConfirmationAreEntered(String username, String password) {
+        createUser(username, password, password);
+    }
+    
+    @When("too short username {string} and valid password {string} are entered")
+    public void tooShortUsernameAndValidPasswordAreEntered(String username, String password){
+        createUser(username, password, password);
+    }
+    
+    @When("correct username {string} and too short password {string} are entered")
+    public void correctUsernameAndTooShortPasswordAreEntered(String username, String password) {
+        createUser(username, password, password);
+    }
+    
+    @When("username {string} and password {string} and mismatching password confirmation {string} are entered")
+    public void usernameAndPasswordAndMismatchingPasswordConfirmationAreEntered(String username, String password, String confirmation) {
+        createUser(username, password, confirmation);
+    }
+ 
+    
     @Then("system will respond {string}")
     public void systemWillRespond(String pageContent) throws Throwable {
         assertTrue(driver.getPageSource().contains(pageContent));
     }
     
+    @Then("user is logged in")
+    public void userIsLoggedIn() {
+        pageHasContent("Ohtu Application main page");
+    }   
+    
+    @Then("user is not logged in and error message is given")
+    public void userIsNotLoggedInAndErrorMessageIsGiven() {
+        pageHasContent("invalid username or password");
+        pageHasContent("Give your credentials to login");
+    }
+    
+    @Then("a new user is created")
+    public void newUserIsCreated() {
+        pageHasContent("Welcome to Ohtu Application!");
+    }
+    
+    @Then("user is not created and error username should have at least 3 characters is reported")
+    public void userIsNotCreatedAndErrorUsernameShouldHaveAtLeast3CharactersIsReported() {
+        pageHasContent("username should have at least 3 characters");
+    }
+    
+    @Then("user is not created and error {string} is reported")
+    public void userIsNotCreatedAndErrorIsReported(String error) {
+        pageHasContent(error);
+    }
+
     @After
     public void tearDown(){
         driver.quit();
@@ -79,4 +122,16 @@ public class Stepdefs {
         element = driver.findElement(By.name("login"));
         element.submit();  
     } 
+    
+    private void createUser(String username, String password, String confirmation) {
+        pageHasContent("Create username and give password");
+        WebElement element = driver.findElement(By.name("username"));
+        element.sendKeys(username);
+        element = driver.findElement(By.name("password"));
+        element.sendKeys(password);
+        element = driver.findElement(By.name("passwordConfirmation"));
+        element.sendKeys(confirmation);
+        element = driver.findElement(By.name("signup"));
+        element.submit();
+    }
 }
