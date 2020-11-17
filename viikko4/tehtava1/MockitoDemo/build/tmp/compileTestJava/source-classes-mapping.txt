@@ -1,0 +1,2 @@
+ohtu/KauppaTest.java
+ ohtu.KauppaTest

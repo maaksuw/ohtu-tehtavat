@@ -1,0 +1,8 @@
+ohtu/Kauppa.java
+ ohtu.Kauppa
+ohtu/Viitegeneraattori.java
+ ohtu.Viitegeneraattori
+ohtu/Main.java
+ ohtu.Main
+ohtu/Pankki.java
+ ohtu.Pankki
