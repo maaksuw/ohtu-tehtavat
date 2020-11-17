@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Kauppa.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Verkkokauppa</a> &gt; <a href="index.source.html" class="el_package">ohtu.verkkokauppa</a> &gt; <span class="el_source">Kauppa.java</span></div><h1>Kauppa.java</h1><pre class="source lang-java linenums">package ohtu.verkkokauppa;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class Kauppa {
+
+    private VarastoInterface varasto;
+    private PankkiInterface pankki;
+    private Ostoskori ostoskori;
+    private ViitegeneraattoriInterface viitegeneraattori;
+    private String kaupanTili;
+
+    @Autowired
+<span class="fc" id="L16">    public Kauppa(VarastoInterface varasto, PankkiInterface pankki, ViitegeneraattoriInterface viitegeneraattori) {</span>
+<span class="fc" id="L17">        this.varasto = varasto;</span>
+<span class="fc" id="L18">        this.pankki = pankki;</span>
+<span class="fc" id="L19">        this.viitegeneraattori = viitegeneraattori;</span>
+<span class="fc" id="L20">        kaupanTili = &quot;33333-44455&quot;;</span>
+<span class="fc" id="L21">    }</span>
+
+    public void aloitaAsiointi() {
+<span class="fc" id="L24">        ostoskori = new Ostoskori();</span>
+<span class="fc" id="L25">    }</span>
+
+    public void poistaKorista(int id) {
+<span class="fc" id="L28">        Tuote t = varasto.haeTuote(id); </span>
+<span class="fc" id="L29">        ostoskori.poista(t);</span>
+<span class="fc" id="L30">        varasto.palautaVarastoon(t);</span>
+<span class="fc" id="L31">    }</span>
+
+    public void lisaaKoriin(int id) {
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (varasto.saldo(id)&gt;0) {</span>
+<span class="fc" id="L35">            Tuote t = varasto.haeTuote(id);             </span>
+<span class="fc" id="L36">            ostoskori.lisaa(t);</span>
+<span class="fc" id="L37">            varasto.otaVarastosta(t);</span>
+        }
+<span class="fc" id="L39">    }</span>
+
+    public boolean tilimaksu(String nimi, String tiliNumero) {
+<span class="fc" id="L42">        int viite = viitegeneraattori.uusi();</span>
+<span class="fc" id="L43">        int summa = ostoskori.hinta();</span>
+<span class="fc" id="L44">        return pankki.tilisiirto(nimi, viite, tiliNumero, kaupanTili, summa);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
